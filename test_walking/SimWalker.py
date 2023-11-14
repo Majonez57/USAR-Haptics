@@ -10,7 +10,7 @@ class Robot:
         # Positional Variables
         self.x = startpos[0]
         self.y = startpos[1]
-        self.theta = random.uniform(0.0, 2.0*math.pi)
+        self.theta = -math.pi/2
 
         #Constants
         self.SIZE = 20 #Robot Size
