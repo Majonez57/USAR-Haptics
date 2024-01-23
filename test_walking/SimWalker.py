@@ -14,7 +14,6 @@ class Robot:
 
         #Constants
         self.SIZE = 20 #Robot Size
-        self.iswalking = "False"
         self.LSPEED = 1.5 #Robot Linear Speed
 
     def draw(self):

@@ -1,6 +1,6 @@
 from time import sleep
 import os
-from bhaptics import haptic_player
+from haptics.bhaptics import haptic_player
 
 class HapticVest:
     def __init__(self, patternDir="patterns"):
@@ -38,7 +38,15 @@ class HapticVest:
 
         sleep(dur)
 
-    def walk(self, angle, intensity=100, gap=0.5, speed=0.25):
+    def dots(self, af, dots,intensity=100, dur=0.2):
+        yes = [{"index": x, "intensity": intensity} for x in dots]
+        for i in dots:
+            self.player.submit_dot("backFrame" if af == "Back" else "frontFrame", 
+                                "VestBack"  if af == "Back" else "VestFront", 
+                                yes, int(dur* 1000))
+        
+
+    def walk(self, angle, intensity=100, gap=0.5, speed=0.15):
         WALKSPEED = speed
         GAP = WALKSPEED if gap < WALKSPEED else gap # Gap must be at least walkspeed
         
@@ -83,21 +91,32 @@ class HapticVest:
         self.player.submit_dot("backFrame" if bf == "Back" else "frontFrame", 
                                "VestBack"  if bf == "Back" else "VestFront", 
                                [{"index": bi, "intensity": intensity}], int(WALKSPEED* 1000))
-        sleep(GAP)
+        sleep(GAP/2)
 
 
 if __name__ == "__main__":
     vest = HapticVest(r"haptics/patterns")
 
-    
-    vest.playPattern("Top_360", 1.5)
-    vest.playPattern("Top_360", 1.5, angle=180)
+    vest.playAll()
 
-    for i in range(0, 370, 45):
-        print(i)
-        for j in range(0, 4):
-            vest.walk(i, 200)
-        sleep(0.1)
+    # while True:    
+    #     vest.dots("Front", [0,1], dur=0.2)
+    #     sleep(0.2)
+
+    #vest.playPattern("All")
+    
+    #vest.playPattern("Top_360", 1.5, intensity=20)
+    #vest.playPattern("Top_360", 1.5, intensity=40)
+    #vest.playPattern("Top_360", 1.5, intensity=60)
+    
+    #vest.playPattern("Top_360", 1.5, intensity=80)
+    #vest.playPattern("Top_360", 1.5, angle=100)
+
+    # for i in range(0, 370, 45):
+    #     print(i)
+    #     for j in range(0, 4):
+    #         vest.walk(i, 200)
+    #     sleep(0.1)
 
 # interval = 0.5
 # durationMillis = 1000

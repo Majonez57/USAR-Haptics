@@ -93,7 +93,7 @@ class HapticPlayer:
             }]
         }
 
-        json_str = json.dumps(submit);
+        json_str = json.dumps(submit)
 
         self.ws.send(json_str)
 
@@ -106,7 +106,7 @@ class HapticPlayer:
             }]
         }
 
-        json_str = json.dumps(submit);
+        json_str = json.dumps(submit)
 
         self.ws.send(json_str)
 

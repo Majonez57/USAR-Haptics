@@ -35,7 +35,7 @@ def runTest(robot, canvas, time=0):
         angle += math.pi * 2
     
     canvas.create_text(180, 15, text=f"{angle:.3f} = {math.degrees(angle):.3f}°", fill="red", font=('mono 15'), tags="label")
-    canvas.create_text(130, 35, text=f"{robot.iswalking}", fill="red", font=('mono 15'), tags="label")
+    #canvas.create_text(130, 35, text=f"{robot.iswalking}", fill="red", font=('mono 15'), tags="label")
     canvas.pack()
 
 
