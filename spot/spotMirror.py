@@ -50,6 +50,8 @@ while True: #Maybe make this not infinite at some point?
     # Get current rotation
     nx, ny, nz = quaternion_to_euler(extractRotation(b.getOdom()))
 
+    # Insert Angle Fixing code if needed here!
+
     # Play Correct Direction
     gap = 0.5
     vest.walk(math.degrees(nz), gap = gap, speed= 0.15)
