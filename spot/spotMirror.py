@@ -1,5 +1,3 @@
-import tkinter as tk
-import threading
 import math
 from time import sleep
 from haptics.hapticVest import HapticVest

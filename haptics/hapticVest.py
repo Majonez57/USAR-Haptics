@@ -42,10 +42,9 @@ class HapticVest:
         yes = [{"index": x, "intensity": intensity} for x in dots]
         for i in dots:
             self.player.submit_dot("backFrame" if af == "Back" else "frontFrame", 
-                                "VestBack"  if af == "Back" else "VestFront", 
-                                yes, int(dur* 1000))
+                                   "VestBack"  if af == "Back" else "VestFront", 
+                                   yes, int(dur* 1000))
         
-
     def walk(self, angle, intensity=100, gap=0.5, speed=0.15):
         WALKSPEED = speed
         GAP = WALKSPEED if gap < WALKSPEED else gap # Gap must be at least walkspeed
@@ -84,6 +83,7 @@ class HapticVest:
             bf = "Front" 
             ai = bi = 0
 
+        # TODO use self.dots instead!
         self.player.submit_dot("backFrame" if af == "Back" else "frontFrame", 
                                "VestBack"  if af == "Back" else "VestFront", 
                                [{"index": ai, "intensity": intensity}], int(WALKSPEED* 1000))
