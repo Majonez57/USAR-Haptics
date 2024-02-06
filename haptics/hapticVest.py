@@ -48,6 +48,7 @@ class HapticVest:
     def walk(self, angle, intensity=100, gap=0.5, speed=0.15):
         WALKSPEED = speed
         GAP = WALKSPEED if gap < WALKSPEED else gap # Gap must be at least walkspeed
+        VESTROW = 3
         
         # Maybe replace this with some kind of match?
         if 293 <= angle <= 338:
@@ -83,6 +84,10 @@ class HapticVest:
             bf = "Front" 
             ai = bi = 0
 
+        #Row
+        ai += VESTROW * 4
+        bi += VESTROW * 4
+
         # TODO use self.dots instead!
         self.player.submit_dot("backFrame" if af == "Back" else "frontFrame", 
                                "VestBack"  if af == "Back" else "VestFront", 
@@ -93,6 +98,64 @@ class HapticVest:
                                [{"index": bi, "intensity": intensity}], int(WALKSPEED* 1000))
         sleep(GAP/2)
 
+    def angle(self, angle, intensity, dur):
+        dots = []
+        VESTROW = 3
+
+        # Maybe replace this with some kind of match?
+        if 293 <= angle <= 338:
+            af = bf = "Front"
+            ai = 0
+            bi = 1
+        elif 338 <= angle or angle < 23:
+            af = bf = "Front"
+            ai = 1
+            bi  = 2
+        elif 23 <= angle < 68:
+            af = bf = "Front"
+            ai = 2
+            bi  = 3
+        elif 68 <= angle < 113:
+            af = "Front" 
+            bf = "Back"
+            ai = bi = 3
+        elif 113 <= angle < 158:
+            af = bf = "Back"
+            ai = 3
+            bi  = 2
+        elif 158 <= angle < 203:
+            af = bf = "Back"
+            ai = 2
+            bi  = 1
+        elif 203 <= angle < 248:
+            af = bf = "Back"
+            ai = 1
+            bi = 0
+        else:
+            af = "Back"
+            bf = "Front" 
+            ai = bi = 0
+
+        
+        #Row
+        ai += VESTROW * 4
+        bi += VESTROW * 4
+
+        # TODO use self.dots instead!
+        if af == bf:
+            self.player.submit_dot("backFrame" if af == "Back" else "frontFrame", 
+                                   "VestBack"  if af == "Back" else "VestFront", 
+                                  [{"index": ai, "intensity": intensity},{"index": bi, "intensity": intensity}], int(dur* 1000))
+        else:
+            self.player.submit_dot("backFrame" if af == "Back" else "frontFrame", 
+                                   "VestBack"  if af == "Back" else "VestFront", 
+                                  [{"index": ai, "intensity": intensity}], int(dur* 1000))
+            
+            self.player.submit_dot("backFrame" if bf == "Back" else "frontFrame", 
+                               "VestBack"  if bf == "Back" else "VestFront", 
+                               [{"index": bi, "intensity": intensity}], int(dur* 1000))
+        
+        sleep(dur-0.1)
 
 if __name__ == "__main__":
     vest = HapticVest(r"haptics/patterns")
