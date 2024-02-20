@@ -1,7 +1,7 @@
 import math
 from time import sleep
-from haptics.hapticVest import HapticVest
-from spot.spot_odom import Bridge
+from haptics.hapticvest import HapticVest
+from spot.spotodom import Bridge
 
 
 def quaternion_to_euler(x, y, z, w):

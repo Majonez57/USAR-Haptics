@@ -2,8 +2,8 @@ import tkinter as tk
 import threading
 import math
 from time import sleep
-from test_walking.SimWalker import Robot
-from haptics.hapticVest import HapticVest
+from test_walking.sim_walker import Robot
+from haptics.hapticvest import HapticVest
 
 SIMSPEED = 5  # ms time for each Tick
 MAXTIME = 1500000

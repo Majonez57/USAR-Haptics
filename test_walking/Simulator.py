@@ -1,6 +1,6 @@
 import tkinter as tk
 import math
-from SimWalker import Robot
+from test_walking.sim_walker import Robot
 
 SIMSPEED = 1  # ms time for each Tick
 MAXTIME = 1500000
