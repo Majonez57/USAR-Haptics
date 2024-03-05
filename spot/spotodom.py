@@ -2,7 +2,7 @@ from PIL import Image
 import numpy as np
 from datetime import datetime
 
-from spot_image_processing import rotate_image, detectTagValue
+from spot.spot_image_processing import rotate_image, detectTagValue
 
 from bosdyn.api import image_pb2
 import bosdyn.client
@@ -28,7 +28,6 @@ class Bridge:
         # This allows us to ensure dectections are only displayed every 
         # certain delay
         self.detectionHistory = {}
-
 
     #Connects to the robot and creates necessary clients
     def createConnection(self, address):

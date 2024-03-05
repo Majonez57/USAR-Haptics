@@ -3,7 +3,7 @@ import os
 from haptics.bhaptics import haptic_player
 
 class HapticVest:
-    def __init__(self, patternDir="patterns"):
+    def __init__(self, patternDir="all_patterns"):
         self.patternDir = patternDir
         self.player = haptic_player.HapticPlayer()
         sleep(1) # Assure connection is made with vest
