@@ -1,11 +1,28 @@
 import math
 from time import sleep
 from haptics.hapticvest import HapticVest
-from spot.spotodom import Bridge
+from spot.spotodom import SpotInterface
+
+ALERTGAP = 12
 
 SHOW_DIRECTION = True
 SHOW_MOTION = True
 SHOW_DETECTIONS = True
+
+# Simulated detections via april tags
+APRIL_TO_DETECTION = {
+    3: "EXAMPLE_1",
+    4: "EXAMPLE_2",
+    10: "EXAMPLE_3",
+    9: "EXAMPLE_4"
+}
+
+DETECTION_PATTERNS = {
+    "EXAMPLE_1": "CenterX",
+    "EXAMPLE_2": "Top_360",
+    "EXAMPLE_3": "Circle",
+    "EXAMPLE_4": "Right"
+}
 
 def quaternion_to_euler(x, y, z, w):
     # Normalize the quaternion
@@ -45,7 +62,7 @@ class spotVestDisplay:
     def __init__(self):
         try:
             # Attempt connection to Rorobot.t
-            self.robot = Bridge()
+            self.robot = SpotInterface()
         except Exception as e:
             print("An Exception occured whilst connecting to the rorobot.t:")
             print(e)
@@ -74,6 +91,7 @@ class spotVestDisplay:
 
         self.loops_since_motion = 5
     
+    # Displays the current walking angle of the robot
     def displayAngleToVest(self):
         self.odom = self.robot.getOdom()
         robot_new_theta = quaternion_to_euler(*extractRotation(self.odom))[2] + 180 #Get rotation info
@@ -113,9 +131,26 @@ class spotVestDisplay:
         self.robot_pos = robot_new_pos
         self.robot_theta = robot_new_theta
 
+
+    # Displays any detected alerts
+    def displayAlertsToVest(self):
+        alerts = self.robot.getAlerts(ALERTGAP)
+        if alerts == []:
+            return 0
+        else:
+            patterns = [DETECTION_PATTERNS[APRIL_TO_DETECTION[int(a)]] for a in alerts]
+            # TODO Play all for now
+            for p in patterns:
+                self.vest.playPattern(p) #Will block
+        return 1
+
+        
+
 if __name__ == "__main__":
     disp = spotVestDisplay()
 
     while True:
+        disp.displayAlertsToVest()
         disp.displayAngleToVest()
+
 

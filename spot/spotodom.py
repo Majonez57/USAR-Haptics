@@ -13,7 +13,7 @@ from bosdyn.client.image import ImageClient, build_image_request
 
 SPOT_IP = "192.168.80.3"
 
-class Bridge:
+class SpotInterface:
     def __init__(self, spotIP=SPOT_IP) -> None:
         print("Attempting Spot Connection")
 
@@ -109,7 +109,7 @@ class Bridge:
         return new
 
 if __name__ == "__main__":
-    b = Bridge()
+    b = SpotInterface()
     #print(b.getOdom())
 
     while True:
