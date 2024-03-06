@@ -44,12 +44,12 @@ def quaternion_to_euler(x, y, z, w):
 
     return roll, pitch, yaw
 
-def extractRotation(odometryInfo):
+def extract_rotation(odometryInfo):
     rotation = odometryInfo.rotation
     
     return rotation.x, rotation.y, rotation.z, rotation.w 
 
-def extractPosition(odometryInfo):
+def extract_position(odometryInfo):
     pos = odometryInfo.position 
 
     return pos.x, pos.y, pos.z
@@ -79,22 +79,22 @@ class spotVestDisplay:
         if SHOW_MOTION and not SHOW_DIRECTION:
             print("WARNING: Motion cannot be shown without direction")
         if SHOW_DIRECTION:
-            self.initAngle()
+            self.init_angle()
         
-    def initAngle(self):
-        self.odom = self.robot.getOdom()
-        self.robot_init_theta = quaternion_to_euler(*extractRotation(self.odom))[2] + 180 #Get rotation info
+    def init_angle(self):
+        self.odom = self.robot.get_odometry()
+        self.robot_init_theta = quaternion_to_euler(*extract_rotation(self.odom))[2] + 180 #Get rotation info
         self.robot_theta = self.robot_init_theta
-        self.robot_pos = extractPosition(self.odom) # Get position info
+        self.robot_pos = extract_position(self.odom) # Get position info
         print(f"LOG: Initial Robot Angle {self.robot_init_theta}")
         print(f"LOG: Initial Robot Position {self.robot_pos}")        
 
         self.loops_since_motion = 5
     
     # Displays the current walking angle of the robot
-    def displayAngleToVest(self):
-        self.odom = self.robot.getOdom()
-        robot_new_theta = quaternion_to_euler(*extractRotation(self.odom))[2] + 180 #Get rotation info
+    def display_angle_to_vest(self):
+        self.odom = self.robot.get_odometry()
+        robot_new_theta = quaternion_to_euler(*extract_rotation(self.odom))[2] + 180 #Get rotation info
 
         # Change in angle since beggining
         robot_facing = robot_new_theta - self.robot_init_theta 
@@ -106,7 +106,7 @@ class spotVestDisplay:
         delta_theta -= 0 if delta_theta < 360 else 360 
 
         if SHOW_MOTION:
-            robot_new_pos = extractPosition(self.odom) # Get position info
+            robot_new_pos = extract_position(self.odom) # Get position info
             delta_pos = sum(map(lambda x,y: (x-y)**2, self.robot_pos, robot_new_pos))**0.5 #Mapping magic to get euclidian distance
 
             print(delta_pos, delta_theta)
@@ -118,7 +118,7 @@ class spotVestDisplay:
         
         if self.loops_since_motion < 1: # Currently in motion
             gap = 0.25
-            self.vest.walk(robot_facing, intensity=200 ,gap = gap, speed= 0.1)
+            self.vest.display_walking(robot_facing, intensity=200 ,gap = gap, speed= 0.1)
 
             totalw = gap + gap/2 # Wait from the vest actions
             
@@ -126,22 +126,22 @@ class spotVestDisplay:
                 sleep((1/POLLRATE) - totalw) # Wait longer if required.
 
         else: # No longer in motion 
-            self.vest.angle(robot_facing, intensity=200, dur = 1/POLLRATE)
+            self.vest.display_angle(robot_facing, intensity=200, dur = 1/POLLRATE)
 
         self.robot_pos = robot_new_pos
         self.robot_theta = robot_new_theta
 
 
     # Displays any detected alerts
-    def displayAlertsToVest(self):
-        alerts = self.robot.getAlerts(ALERTGAP)
+    def display_alerts_to_vest(self):
+        alerts = self.robot.get_alerts(ALERTGAP)
         if alerts == []:
             return 0
         else:
             patterns = [DETECTION_PATTERNS[APRIL_TO_DETECTION[int(a)]] for a in alerts]
             # TODO Play all for now
             for p in patterns:
-                self.vest.playPattern(p) #Will block
+                self.vest.display_pattern(p) #Will block
                 sleep(1.2) # Wait before playing next parttern to make them easier to distinguish
         return 1
 
@@ -150,9 +150,9 @@ def main():
 
     while True:
         if SHOW_DETECTIONS:
-            disp.displayAlertsToVest()
+            disp.display_alerts_to_vest()
         if SHOW_DIRECTION:
-            disp.displayAngleToVest()
+            disp.display_angle_to_vest()
 
 if __name__ == "__main__":
     main()

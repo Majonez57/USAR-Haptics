@@ -18,7 +18,7 @@ class HapticVest:
         sleep(1)
 
     # Plays all saved patterns
-    def playAll(self, delay=3):
+    def play_all_patterns(self, delay=3):
 
         dir = self.patternDir
 
@@ -30,7 +30,7 @@ class HapticVest:
             self.player.submit_registered(f"{fil}_n") # Plays the submitted pattern
             sleep(delay)
 
-    def playPattern(self, name, dur=3, intensity=100, angle=0):
+    def display_pattern(self, name, dur=3, intensity=100, angle=0):
         self.player.submit_registered(f"{name}.tact_n")
         self.player.submit_registered_with_option(name, 'temp', 
                                                   scale_option={"intensity": intensity, "duration": dur}, 
@@ -38,14 +38,14 @@ class HapticVest:
 
         sleep(dur)
 
-    def dots(self, af, dots,intensity=100, dur=0.2):
-        yes = [{"index": x, "intensity": intensity} for x in dots]
+    def display_dots(self, af, dots,intensity=100, dur=0.2):
+        dot_data = [{"index": x, "intensity": intensity} for x in dots]
         for i in dots:
             self.player.submit_dot("backFrame" if af == "Back" else "frontFrame", 
                                    "VestBack"  if af == "Back" else "VestFront", 
-                                   yes, int(dur* 1000))
+                                   dot_data, int(dur* 1000))
         
-    def walk(self, angle, intensity=100, gap=0.5, speed=0.15):
+    def display_walking(self, angle, intensity=100, gap=0.5, speed=0.15):
         WALKSPEED = speed
         GAP = WALKSPEED if gap < WALKSPEED else gap # Gap must be at least walkspeed
         VESTROW = 3
@@ -98,8 +98,7 @@ class HapticVest:
                                [{"index": bi, "intensity": intensity}], int(WALKSPEED* 1000))
         sleep(GAP/2)
 
-    def angle(self, angle, intensity, dur):
-        dots = []
+    def display_angle(self, angle, intensity, dur):
         VESTROW = 3
 
         # Maybe replace this with some kind of match?
@@ -160,7 +159,7 @@ class HapticVest:
 if __name__ == "__main__":
     vest = HapticVest(r"haptics/patterns")
 
-    vest.playAll()
+    vest.play_all_patterns()
 
     # while True:    
     #     vest.dots("Front", [0,1], dur=0.2)

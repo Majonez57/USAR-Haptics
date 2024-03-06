@@ -17,7 +17,7 @@ def rotate_image(image, source_name):
         return image
 
 # Returns all tag data
-def detectTagValue(image_grey, tag_family="tag36h11"):
+def detect_tags(image_grey, tag_family="tag36h11"):
     
     detected = detector.detect(image_grey, estimate_tag_pose=False)
 
