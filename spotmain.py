@@ -1,7 +1,7 @@
 import math
 from time import sleep
-from haptics.hapticvest import HapticVest
-from spot.spotodom import SpotInterface
+from haptics.hapticVest import HapticVest
+from spot.spotinterface import SpotInterface
 
 ALERTGAP = 12
 
@@ -142,15 +142,18 @@ class spotVestDisplay:
             # TODO Play all for now
             for p in patterns:
                 self.vest.playPattern(p) #Will block
+                sleep(1.2) # Wait before playing next parttern to make them easier to distinguish
         return 1
 
-        
-
-if __name__ == "__main__":
+def main():
     disp = spotVestDisplay()
 
     while True:
-        disp.displayAlertsToVest()
-        disp.displayAngleToVest()
+        if SHOW_DETECTIONS:
+            disp.displayAlertsToVest()
+        if SHOW_DIRECTION:
+            disp.displayAngleToVest()
 
+if __name__ == "__main__":
+    main()
 
