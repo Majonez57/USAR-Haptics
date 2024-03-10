@@ -3,14 +3,14 @@ from PIL import ImageTk, Image
 from haptics.hapticVest import HapticVest
 
 
-def create_button(root, row, col, image_path, text, pattern):
+def create_button(root, row, col, image_path, text, on_press):
     # Open and resize the image to fit the button
     image = Image.open(image_path)
     image = image.resize((170, 170), Image.ANTIALIAS) 
     image = ImageTk.PhotoImage(image)
     
     # Create the button with image and text
-    button = tk.Button(root, text=text, image=image, compound=tk.TOP, command=lambda: button_clicked(pattern), font=("Helvetica", 14, "bold"), bg="white")
+    button = tk.Button(root, text=text, image=image, compound=tk.TOP, command=on_press, font=("Helvetica", 14, "bold"), bg="white")
     button.image = image  # Jank to prevent image from being garbage collected
     button.grid(row=row, column=col, padx=10, pady=10, sticky="nsew")
 
@@ -26,9 +26,6 @@ def connect_to_vest():
 def main():
     
     vest = connect_to_vest()
-    
-    def button_clicked(pattern):
-        vest.display_pattern(pattern)
     
     root = tk.Tk()
     root.title("USAR-Haptics-Training")
@@ -49,7 +46,7 @@ def main():
         root.grid_columnconfigure(i, weight=1)
 
     # Create buttons with images and text
-    create_button(root, 1, 0, "resources/images/fire.jpg", "Fire", "fire")
+    create_button(root, 1, 0, "resources/images/fire.jpg", "Fire", lambda: vest.display_pattern('Right', angle=270))
     # create_button(root, 1, 1, "resources/images/biohaz.jpg", "Biohazard")
     # create_button(root, 1, 2, "resources/images/oxygen.jpg", "Low Oxygen")
     # create_button(root, 2, 0, "resources/images/alive.png", "Uninjured Person")
