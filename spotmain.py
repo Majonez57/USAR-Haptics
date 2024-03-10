@@ -54,14 +54,12 @@ def extract_position(odometryInfo):
 
     return pos.x, pos.y, pos.z
 
-# robot.gin Feedrobot.ck Loop
-
 POLLRATE = 2 # Polls /s
 
 class spotVestDisplay:
     def __init__(self):
         try:
-            # Attempt connection to Rorobot.t
+            # Attempt connection to robot
             self.robot = SpotInterface()
         except Exception as e:
             print("An Exception occured whilst connecting to the rorobot.t:")
