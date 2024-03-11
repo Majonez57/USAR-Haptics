@@ -16,7 +16,7 @@ def create_button(root, row, col, image_path, text, on_press):
 
 def connect_to_vest():
     try:
-        vest = HapticVest(r"haptics/final_patterns")
+        vest = HapticVest(r"haptics/all_patterns")
         return vest
     except Exception as e:
         print("An error occured connecting to the haptic vest:")
@@ -46,7 +46,7 @@ def main():
         root.grid_columnconfigure(i, weight=1)
 
     # Create buttons with images and text
-    create_button(root, 1, 0, "resources/images/fire.jpg", "Fire", lambda: vest.display_pattern('Right', angle=270))
+    create_button(root, 1, 0, "resources/images/fire.jpg", "Fire", lambda: vest.display_pattern('Right', angle=500))
     # create_button(root, 1, 1, "resources/images/biohaz.jpg", "Biohazard")
     # create_button(root, 1, 2, "resources/images/oxygen.jpg", "Low Oxygen")
     # create_button(root, 2, 0, "resources/images/alive.png", "Uninjured Person")
