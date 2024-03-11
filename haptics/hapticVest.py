@@ -1,6 +1,6 @@
 from time import sleep
 import os
-from bhaptics import haptic_player
+from haptics.bhaptics import haptic_player
 
 class HapticVest:
     def __init__(self, patternDir="all_patterns"):
@@ -30,7 +30,8 @@ class HapticVest:
             self.player.submit_registered(f"{fil}_n") # Plays the submitted pattern
             sleep(delay)
 
-    def display_pattern(self, name, dur=3, intensity=100, angle=0):
+    def display_pattern(self, name, dur=0, intensity=100, angle=0):
+
         self.player.submit_registered_with_option(f"{name}.tact_n", 'temp', 
                                                   scale_option={"intensity": intensity, "duration": dur}, 
                                                   rotation_option={"offsetAngleX": angle, "offsetY": 0})

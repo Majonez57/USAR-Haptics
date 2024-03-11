@@ -1,9 +1,11 @@
 import tkinter as tk
 from PIL import ImageTk, Image
 from haptics.hapticVest import HapticVest
+from random import shuffle
 
 
-def create_button(root, row, col, image_path, text, on_press):
+def create_button(root, pos, image_path, text, on_press):
+    row, col = pos
     # Open and resize the image to fit the button
     image = Image.open(image_path)
     image = image.resize((170, 170), Image.ANTIALIAS) 
@@ -26,7 +28,16 @@ def connect_to_vest():
 def main():
     
     vest = connect_to_vest()
+
     
+    def display_dead():
+        vest.display_pattern('Heartx2',intensity=200, dur=1)
+        vest.display_pattern('Quad_X_Outwards',intensity=200, dur=1.5)
+    
+    def display_injured():
+        vest.display_pattern('Heartx2',intensity=200, dur=1)
+        vest.display_pattern('Zig_Zag_Col',intensity=200, dur=1.5)
+
     root = tk.Tk()
     root.title("USAR-Haptics-Training")
 
@@ -45,15 +56,19 @@ def main():
     for i in range(3):  # 3 columns
         root.grid_columnconfigure(i, weight=1)
 
-    # Create buttons with images and text
-    create_button(root, 1, 0, "resources/images/fire.jpg", "Fire", lambda: vest.display_pattern('Right', angle=500))
-    # create_button(root, 1, 1, "resources/images/biohaz.jpg", "Biohazard")
-    # create_button(root, 1, 2, "resources/images/oxygen.jpg", "Low Oxygen")
-    # create_button(root, 2, 0, "resources/images/alive.png", "Uninjured Person")
-    # create_button(root, 2, 1, "resources/images/injured.png", "Injured Person")
-    # create_button(root, 2, 2, "resources/images/dead.jpg", "Dead Person")
+    # Shuffle Button Positions
+    pos = [(1,0),(1,1),(1,2),(2,0),(2,1),(2,2)]
+    shuffle(pos)
 
-    example_label = tk.Label(root, text="< Label >", font=("Arial", 20, "bold"))
+    # Create buttons with images and text
+    create_button(root, pos[0], "resources/images/fire.jpg", "Fire", lambda: vest.display_pattern('Right', dur=1.5, intensity=80, angle=90))
+    create_button(root, pos[1], "resources/images/biohaz.jpg", "Biohazard", lambda: vest.display_pattern('Chevrons', dur=1.5))
+    create_button(root, pos[2], "resources/images/oxygen.jpg", "Low Oxygen", lambda: vest.display_pattern('Inward_heart_Spiral', dur=1.5))
+    create_button(root, pos[3], "resources/images/alive.png", "Uninjured Person", lambda: vest.display_pattern('Heartx4',intensity=200, dur=2))
+    create_button(root, pos[4], "resources/images/injured.png", "Injured Person", lambda: display_injured())
+    create_button(root, pos[5], "resources/images/dead.jpg", "Dead Person", lambda: display_dead())
+
+    example_label = tk.Label(root, text="Press a Category to recieve message:", font=("Arial", 20, "bold"))
     example_label.grid(row=0, column=0, columnspan=3, pady=10)
 
     root.mainloop()
