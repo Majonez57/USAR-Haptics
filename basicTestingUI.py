@@ -6,10 +6,14 @@ from random import shuffle, randint, random
 import threading
 
 def button_clicked(button_text):
-    print(f"[{time()}]: USER: {button_text}")
+    text = f"[{time()}]: USER: {button_text}"
+    file.write(text)
+    print(text)
 
 def pattern_played(category):
-    print(f"[{time()}]: VEST: {category}")
+    text = f"[{time()}]: VEST: {category}"
+    file.write(text)
+    print(text)
 
 def create_button(root, pos, image_path, text, on_press):
     row, col = pos
@@ -79,6 +83,10 @@ class Window(threading.Thread):
 
 w = Window()
 
+participant = input("Enter Participant ID: ")
+testn = input("Enter test number")
+
+file = open(f"/basic_test_results/{participant}_{testn}", 'a')
 
 vest = connect_to_vest()
 
