@@ -159,7 +159,7 @@ class HapticVest:
                                "VestBack"  if bf == "Back" else "VestFront", 
                                [{"index": bi, "intensity": intensity}], int(dur* 1000))
         
-        sleep(dur-0.1)
+        sleep(dur)
 
 if __name__ == "__main__":
     vest = HapticVest(r"haptics/all_patterns")

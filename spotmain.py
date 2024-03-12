@@ -56,7 +56,7 @@ def extract_position(odometryInfo):
 
     return pos.x, pos.y, pos.z
 
-POLLRATE = 2 # Polls /s
+POLLRATE = 6 # Polls /s
 
 class spotVestDisplay:
     def __init__(self):
@@ -110,25 +110,27 @@ class spotVestDisplay:
         if SHOW_MOTION:
             robot_new_pos = self.robot.get_pos() # Get position info
             delta_pos = sum(map(lambda x,y: (x-y)**2, self.robot_pos, robot_new_pos))**0.5 #Mapping magic to get euclidian distance
-
-            #print(delta_pos, delta_theta)
-
-            if delta_pos > 0.15 or abs(delta_theta) > 15: #If amount moved is more than 2m, or turn more than 5 degrees
+            
+            if delta_pos > 0.15: #If amount moved is more than 0.1m
                 self.loops_since_motion = 0 
             else:
                 self.loops_since_motion += 1
         
         if self.loops_since_motion < 1: # Currently in motion
-            gap = 0.25
-            self.vest.display_walking(robot_facing, intensity=300 ,gap = gap, speed= 0.1)
-
-            totalw = gap + gap/2 # Wait from the vest actions
             
-            if totalw < 1/POLLRATE:
-                sleep((1/POLLRATE) - totalw) # Wait longer if required.
+            self.vest.display_angle(robot_facing, intensity=400, dur = 1/POLLRATE)
 
         else: # No longer in motion 
-            self.vest.display_angle(robot_facing, intensity=200, dur = 1/POLLRATE)
+            # gap = 0.25
+            # self.vest.display_walking(robot_facing, intensity=300 ,gap = gap, speed=0.1)
+
+            # totalw = gap + gap/2 # Wait from the vest actions
+            
+            # if totalw < 1/POLLRATE:
+            #     sleep((1/POLLRATE) - totalw) # Wait longer if required.
+            self.vest.display_angle(robot_facing, intensity=150, dur = 0.5/POLLRATE)
+            sleep(0.5/POLLRATE)
+
 
         self.robot_pos = robot_new_pos
         self.robot_theta = robot_new_theta
@@ -144,7 +146,7 @@ class spotVestDisplay:
             # TODO Play all for now
             for p in patterns:
                 self.vest.display_pattern(p) #Will block
-                sleep(1.2) # Wait before playing next parttern to make them easier to distinguish
+                sleep(0.8) # Wait before playing next parttern to make them easier to distinguish
         return 1
     
     def take_paths(self):
@@ -153,7 +155,7 @@ class spotVestDisplay:
         
         self.path.append((round(x, 4), round(y, 4)))
 
-EXPERIMENT_DUR = 20
+EXPERIMENT_DUR = 60
 
 def main():
     disp = spotVestDisplay()
@@ -170,7 +172,7 @@ def main():
     x, y = zip(*disp.path)
     plt.figure()
     
-    plt.plot(x, y, marker='o', linestyle='-', color='r')
+    plt.plot(x, y, marker='x', linestyle='--', color='r')
     
     plt.xlabel('X')
     #plt.xlim(-8, 8)
