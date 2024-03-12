@@ -9,6 +9,9 @@ import bosdyn.client
 import bosdyn.client.util
 from bosdyn.client.robot_state import RobotStateClient
 from bosdyn.client.image import ImageClient, build_image_request
+from bosdyn.client.frame_helpers import (BODY_FRAME_NAME, ODOM_FRAME_NAME, VISION_FRAME_NAME,
+                                         get_se2_a_tform_b)
+from bosdyn.client import math_helpers
 
 
 SPOT_IP = "192.168.80.3"
@@ -81,6 +84,7 @@ class SpotInterface:
 
     #Gets full robotic state
     def get_state(self):
+        
         return self.robot_state_client.get_robot_state()
     
     #Returns robot odometry
@@ -88,9 +92,16 @@ class SpotInterface:
         state = self.get_state()
         
         transforms = state.kinematic_state.transforms_snapshot
-        
-        return transforms.child_to_parent_edge_map['odom'].parent_tform_child
-    
+
+        return transforms.child_to_parent_edge_map['vision'].parent_tform_child
+
+    def get_pos(self):
+        transforms = self.robot_state_client.get_robot_state().kinematic_state.transforms_snapshot
+
+        out_tform_body = get_se2_a_tform_b(transforms, ODOM_FRAME_NAME, BODY_FRAME_NAME)
+
+        return (out_tform_body.x, out_tform_body.y)
+
     #Checks if certain time has passed since last detection of a certain type
     #Updates detection history
     def get_alerts(self, delay):

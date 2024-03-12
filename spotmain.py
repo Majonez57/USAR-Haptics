@@ -1,13 +1,15 @@
 import math
-from time import sleep
+from time import sleep, time
 from haptics.hapticVest import HapticVest
 from spot.spotinterface import SpotInterface
+import matplotlib.pyplot as plt
 
 ALERTGAP = 12
 
 SHOW_DIRECTION = True
 SHOW_MOTION = True
 SHOW_DETECTIONS = True
+RECORD_PATH = True
 
 # Simulated detections via april tags
 APRIL_TO_DETECTION = {
@@ -78,12 +80,14 @@ class spotVestDisplay:
             print("WARNING: Motion cannot be shown without direction")
         if SHOW_DIRECTION:
             self.init_angle()
+        if RECORD_PATH:
+            self.path = []
         
     def init_angle(self):
         self.odom = self.robot.get_odometry()
         self.robot_init_theta = quaternion_to_euler(*extract_rotation(self.odom))[2] + 180 #Get rotation info
         self.robot_theta = self.robot_init_theta
-        self.robot_pos = extract_position(self.odom) # Get position info
+        self.robot_pos = self.robot.get_pos() # Get position info
         print(f"LOG: Initial Robot Angle {self.robot_init_theta}")
         print(f"LOG: Initial Robot Position {self.robot_pos}")        
 
@@ -104,10 +108,10 @@ class spotVestDisplay:
         delta_theta -= 0 if delta_theta < 360 else 360 
 
         if SHOW_MOTION:
-            robot_new_pos = extract_position(self.odom) # Get position info
+            robot_new_pos = self.robot.get_pos() # Get position info
             delta_pos = sum(map(lambda x,y: (x-y)**2, self.robot_pos, robot_new_pos))**0.5 #Mapping magic to get euclidian distance
 
-            print(delta_pos, delta_theta)
+            #print(delta_pos, delta_theta)
 
             if delta_pos > 0.15 or abs(delta_theta) > 15: #If amount moved is more than 2m, or turn more than 5 degrees
                 self.loops_since_motion = 0 
@@ -116,7 +120,7 @@ class spotVestDisplay:
         
         if self.loops_since_motion < 1: # Currently in motion
             gap = 0.25
-            self.vest.display_walking(robot_facing, intensity=200 ,gap = gap, speed= 0.1)
+            self.vest.display_walking(robot_facing, intensity=300 ,gap = gap, speed= 0.1)
 
             totalw = gap + gap/2 # Wait from the vest actions
             
@@ -142,15 +146,40 @@ class spotVestDisplay:
                 self.vest.display_pattern(p) #Will block
                 sleep(1.2) # Wait before playing next parttern to make them easier to distinguish
         return 1
+    
+    def take_paths(self):
+
+        x, y, = self.robot.get_pos()
+        
+        self.path.append((round(x, 4), round(y, 4)))
+
+EXPERIMENT_DUR = 20
 
 def main():
     disp = spotVestDisplay()
-
-    while True:
+    start = time()
+    
+    while time() - start < EXPERIMENT_DUR:
         if SHOW_DETECTIONS:
             disp.display_alerts_to_vest()
         if SHOW_DIRECTION:
             disp.display_angle_to_vest()
+        if RECORD_PATH:
+            disp.take_paths()
+    
+    x, y = zip(*disp.path)
+    plt.figure()
+    
+    plt.plot(x, y, marker='o', linestyle='-', color='r')
+    
+    plt.xlabel('X')
+    #plt.xlim(-8, 8)
+    plt.ylabel('Y')
+    #plt.ylim(-8, 8)
+    plt.title('Path')
+    
+    plt.grid(True)
+    plt.show()
 
 if __name__ == "__main__":
     main()

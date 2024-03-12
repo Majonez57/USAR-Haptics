@@ -46,8 +46,8 @@ class Window(threading.Thread):
         screen_height = self.root.winfo_screenheight()
 
         # Set window size
-        window_width  = screen_width // 2
-        window_height = 2*screen_height // 3
+        window_width  = int(1.5*screen_width // 2)
+        window_height = int(2.5*screen_height // 3)
         self.root.geometry(f"{window_width}x{window_height}")
 
         # Configure row and column weights to make buttons fill the space
@@ -135,3 +135,6 @@ while time() - start < 60:
     pat[randint(0, len(pat)-1)]()
 
     sleep(random() * 8)
+
+print("---- Test Complete ----")
+exit(0)
