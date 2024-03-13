@@ -32,11 +32,11 @@ def main():
     
     def display_dead():
         vest.display_pattern('Heartx2',intensity=200, dur=1)
-        vest.display_pattern('Quad_X_Outwards',intensity=200, dur=1.5)
+        vest.display_pattern('Quad_X_Outwards',intensity=200, dur=1.5, warn=False)
     
     def display_injured():
         vest.display_pattern('Heartx2',intensity=200, dur=1)
-        vest.display_pattern('Zig_Zag_Col',intensity=200, dur=1.5)
+        vest.display_pattern('Zig_Zag_Col',intensity=200, dur=1.5, warn=False)
 
     root = tk.Tk()
     root.title("USAR-Haptics-Training")

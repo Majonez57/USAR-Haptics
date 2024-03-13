@@ -56,7 +56,7 @@ def extract_position(odometryInfo):
 
     return pos.x, pos.y, pos.z
 
-POLLRATE = 6 # Polls /s
+#POLLRATE = 6 # Polls /s
 
 class spotVestDisplay:
     def __init__(self):
@@ -118,7 +118,7 @@ class spotVestDisplay:
         
         if self.loops_since_motion < 1: # Currently in motion
             
-            self.vest.display_angle(robot_facing, intensity=400, dur = 1/POLLRATE)
+            self.vest.display_angle(robot_facing, intensity=400, dur = 0.3)
 
         else: # No longer in motion 
             # gap = 0.25
@@ -128,8 +128,8 @@ class spotVestDisplay:
             
             # if totalw < 1/POLLRATE:
             #     sleep((1/POLLRATE) - totalw) # Wait longer if required.
-            self.vest.display_angle(robot_facing, intensity=150, dur = 0.5/POLLRATE)
-            sleep(0.5/POLLRATE)
+            self.vest.display_angle(robot_facing, intensity=150, dur = 0.2)
+            sleep(0.2)
 
 
         self.robot_pos = robot_new_pos
