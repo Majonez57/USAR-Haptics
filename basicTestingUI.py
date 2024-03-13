@@ -6,12 +6,12 @@ from random import shuffle, randint, random
 import threading
 
 def button_clicked(button_text):
-    text = f"[{time()}]: USER: {button_text}"
+    text = f"[{time()}]: USER: {button_text} \n"
     file.write(text)
     print(text)
 
 def pattern_played(category):
-    text = f"[{time()}]: VEST: {category}"
+    text = f"[{time()}]: VEST: {category} \n"
     file.write(text)
     print(text)
 
@@ -81,24 +81,24 @@ class Window(threading.Thread):
 
         self.root.mainloop()
 
-w = Window()
-
 participant = input("Enter Participant ID: ")
-testn = input("Enter test number")
+testn = input("Enter test number: ")
 
-file = open(f"/basic_test_results/{participant}_{testn}", 'a')
+file = open(f"{participant}_{testn}.txt", "x")
+
+w = Window()
 
 vest = connect_to_vest()
 
 def display_dead():
     pattern_played("Dead")
     vest.display_pattern('Heartx2',intensity=200, dur=1)
-    vest.display_pattern('Quad_X_Outwards',intensity=200, dur=1.5)
+    vest.display_pattern('Quad_X_Outwards',intensity=200, dur=1.5, warn=False)
     
 def display_injured():
     pattern_played("Injured Person")
     vest.display_pattern('Heartx2',intensity=200, dur=1)
-    vest.display_pattern('Zig_Zag_Col',intensity=200, dur=1.5)
+    vest.display_pattern('Zig_Zag_Col',intensity=200, dur=1.5, warn=False)
 
 def display_uninjured():
     pattern_played("Uninjured Person")
