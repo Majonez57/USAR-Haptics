@@ -1,6 +1,7 @@
 import tkinter as tk
 from PIL import ImageTk, Image
 from haptics.hapticVest import HapticVest
+import haptics.USARpatterns as USAR
 from random import shuffle
 
 
@@ -27,16 +28,8 @@ def connect_to_vest():
 
 def main():
     
+    participant = input("Enter Participant ID: ")
     vest = connect_to_vest()
-
-    
-    def display_dead():
-        vest.display_pattern('Heartx2',intensity=200, dur=1)
-        vest.display_pattern('Quad_X_Outwards',intensity=200, dur=1.5, warn=False)
-    
-    def display_injured():
-        vest.display_pattern('Heartx2',intensity=200, dur=1)
-        vest.display_pattern('Zig_Zag_Col',intensity=200, dur=1.5, warn=False)
 
     root = tk.Tk()
     root.title("USAR-Haptics-Training")
@@ -62,16 +55,16 @@ def main():
 
     # Create buttons with images and text
     # Enviroment State
-    create_button(root, pos[0], "resources/images/fire.jpg", "Fire", lambda: vest.display_pattern('Right', dur=1.5, intensity=80, angle=90))
-    create_button(root, pos[1], "resources/images/biohaz.jpg", "Biohazard", lambda: vest.display_pattern('Chevrons', dur=1.5))
-    create_button(root, pos[2], "resources/images/oxygen.jpg", "Low Oxygen", lambda: vest.display_pattern('Inward_heart_Spiral', dur=1.5))
+    create_button(root, pos[0], "resources/images/fire.jpg", "Fire", lambda: USAR.display_fire(vest, participant))
+    create_button(root, pos[1], "resources/images/biohaz.jpg", "Biohazard", lambda: USAR.display_bio(vest, participant))
+    create_button(root, pos[2], "resources/images/oxygen.jpg", "Low Oxygen", lambda: USAR.display_lowO(vest, participant))
     # User Detections
-    create_button(root, pos[3], "resources/images/alive.png", "Uninjured Person", lambda: vest.display_pattern('Heartx4',intensity=200, dur=1.8))
-    create_button(root, pos[4], "resources/images/injured.png", "Injured Person", lambda: display_injured())
-    create_button(root, pos[5], "resources/images/dead.jpg", "Dead Person", lambda: display_dead())
+    create_button(root, pos[3], "resources/images/alive.png", "Uninjured Person", lambda: USAR.display_uninjured(vest, participant))
+    create_button(root, pos[4], "resources/images/injured.png", "Injured Person", lambda: USAR.display_injured(vest, participant))
+    create_button(root, pos[5], "resources/images/dead.jpg", "Unconcious Person", lambda: USAR.display_dead(vest, participant))
     # Robotic State
-    create_button(root, pos[6], "resources/images/lost.png", "Connection Lost", lambda: vest.display_pattern('Top_360',intensity=200, dur=2))
-    create_button(root, pos[7], "resources/images/robotIssue.jpg", "Robot Error", lambda: vest.display_pattern('Triple_Flip',intensity=200, dur=2))
+    create_button(root, pos[6], "resources/images/lost.png", "Connection Lost", lambda: USAR.display_connection(vest, participant))
+    create_button(root, pos[7], "resources/images/robotIssue.jpg", "Robot Error", lambda: USAR.display_error(vest, participant))
 
 
     example_label = tk.Label(root, text="Press a Category to recieve message:", font=("Arial", 20, "bold"))

@@ -1,6 +1,7 @@
 import tkinter as tk
 from PIL import ImageTk, Image
 from haptics.hapticVest import HapticVest
+import haptics.USARpatterns as USAR
 from time import time, sleep
 from random import shuffle, randint, random
 import threading
@@ -90,48 +91,50 @@ w = Window()
 
 vest = connect_to_vest()
 
-def display_dead():
-    pattern_played("Dead")
-    vest.display_pattern('Heartx2',intensity=200, dur=1)
-    vest.display_pattern('Quad_X_Outwards',intensity=200, dur=1.5, warn=False)
+# A participants will have full patterns
+# B participats will have simple patterns
+
+def register_incapacitated():
+    pattern_played("Incapacitated")
+    USAR.display_dead(vest, participant)
     
-def display_injured():
+def register_injured():
     pattern_played("Injured Person")
-    vest.display_pattern('Heartx2',intensity=200, dur=1)
-    vest.display_pattern('Zig_Zag_Col',intensity=200, dur=1.5, warn=False)
-
-def display_uninjured():
+    USAR.display_injured(vest, participant)
+    
+def register_uninjured():
     pattern_played("Uninjured Person")
-    vest.display_pattern('Heartx4',intensity=200, dur=1.8)
-
-def display_fire():
+    USAR.display_uninjured(vest, participant)
+    
+def register_fire():
     pattern_played("Fire")
-    vest.display_pattern('Right', dur=1.5, intensity=80, angle=90)
-
-def display_lowO():
+    USAR.display_fire(vest, participant)
+    
+def register_lowO():
     pattern_played("Low Oxygen")
-    vest.display_pattern('Inward_heart_Spiral', dur=1.5)
+    USAR.display_lowO(vest, participant)
 
-def display_bio():
+def register_bio():
     pattern_played("Biohazard")
-    vest.display_pattern('Chevrons', dur=1.5)
+    USAR.display_bio(vest, participant)
 
-def display_connection():
+def register_connection():
     pattern_played("Connection Lost")
-    vest.display_pattern('Top_360',intensity=200, dur=2)
+    USAR.display_connection(vest, participant)
 
-def display_error():
+def register_error():
     pattern_played("Robot Error")
-    vest.display_pattern('Triple_Flip',intensity=200, dur=2)
+    USAR.display_error(vest, participant)
 
-pat = [lambda: display_dead(),
-       lambda: display_uninjured(),
-       lambda: display_injured(),
-       lambda: display_fire(),
-       lambda: display_lowO(),
-       lambda: display_bio(),
-       lambda: display_connection(),
-       lambda: display_error()]
+
+pat = [lambda: register_incapacitated(),
+       lambda: register_uninjured(),
+       lambda: register_injured(),
+       lambda: register_fire(),
+       lambda: register_lowO(),
+       lambda: register_bio(),
+       lambda: register_connection(),
+       lambda: register_error()]
 
 sleep(5)
 

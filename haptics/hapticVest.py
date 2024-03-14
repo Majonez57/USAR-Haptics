@@ -30,13 +30,16 @@ class HapticVest:
             self.player.submit_registered(f"{fil}_n") # Plays the submitted pattern
             sleep(delay)
 
+    def display_warning(self):
+        self.player.submit_registered_with_option(f"Incoming!.tact_n", 'temp', 
+                                                  scale_option={"intensity": 300, "duration": 0.6},
+                                                  rotation_option={"offsetAngleX": 0, "offsetY": 0})
+        sleep(0.8)
+
     def display_pattern(self, name, dur=0, intensity=150, angle=0, warn=True):
 
         if warn:
-            self.player.submit_registered_with_option(f"Incoming!.tact_n", 'temp', 
-                                                  scale_option={"intensity": 300, "duration": 0.6},
-                                                  rotation_option={"offsetAngleX": 0, "offsetY": 0})
-            sleep(0.8)
+            self.display_warning(self)
         self.player.submit_registered_with_option(f"{name}.tact_n", 'temp', 
                                                   scale_option={"intensity": intensity, "duration": dur}, 
                                                   rotation_option={"offsetAngleX": angle, "offsetY": 0})
