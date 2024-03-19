@@ -51,19 +51,20 @@ def main():
 
     # Shuffle Button Positions
     pos = [(1,0),(1,1),(1,2),(1,3),(2,0),(2,1),(2,2), (2,3)]
-    shuffle(pos)
+    
+    #shuffle(pos)
 
     # Create buttons with images and text
     # Enviroment State
-    create_button(root, pos[0], "resources/images/fire.jpg", "Fire", lambda: USAR.display_fire(vest, participant))
-    create_button(root, pos[1], "resources/images/biohaz.jpg", "Biohazard", lambda: USAR.display_bio(vest, participant))
-    create_button(root, pos[2], "resources/images/oxygen.jpg", "Low Oxygen", lambda: USAR.display_lowO(vest, participant))
+    create_button(root, pos[4], "resources/images/fire.jpg", "Fire", lambda: USAR.display_fire(vest, participant))
+    create_button(root, pos[5], "resources/images/biohaz.jpg", "Biohazard", lambda: USAR.display_bio(vest, participant))
+    create_button(root, pos[6], "resources/images/oxygen.jpg", "Low Oxygen", lambda: USAR.display_lowO(vest, participant))
     # User Detections
-    create_button(root, pos[3], "resources/images/alive.png", "Uninjured Person", lambda: USAR.display_uninjured(vest, participant))
-    create_button(root, pos[4], "resources/images/injured.png", "Injured Person", lambda: USAR.display_injured(vest, participant))
-    create_button(root, pos[5], "resources/images/dead.jpg", "Unconcious Person", lambda: USAR.display_dead(vest, participant))
+    create_button(root, pos[0], "resources/images/alive.png", "Uninjured Person", lambda: USAR.display_uninjured(vest, participant))
+    create_button(root, pos[1], "resources/images/injured.png", "Injured Person", lambda: USAR.display_injured(vest, participant))
+    create_button(root, pos[2], "resources/images/dead.jpg", "Unconscious Person", lambda: USAR.display_dead(vest, participant))
     # Robotic State
-    create_button(root, pos[6], "resources/images/lost.png", "Connection Lost", lambda: USAR.display_connection(vest, participant))
+    create_button(root, pos[3], "resources/images/lost.png", "Connection Lost", lambda: USAR.display_connection(vest, participant))
     create_button(root, pos[7], "resources/images/robotIssue.jpg", "Robot Error", lambda: USAR.display_error(vest, participant))
 
 

@@ -6,16 +6,6 @@ from time import time, sleep
 from random import shuffle, randint, random
 import threading
 
-def button_clicked(button_text):
-    text = f"[{time()}]: USER: {button_text} \n"
-    file.write(text)
-    print(text)
-
-def pattern_played(category):
-    text = f"[{time()}]: VEST: {category} \n"
-    file.write(text)
-    print(text)
-
 def create_button(root, pos, image_path, text, on_press):
     row, col = pos
     # Open and resize the image to fit the button
@@ -72,20 +62,37 @@ class Window(threading.Thread):
         # User Detections
         create_button(self.root, pos[3], "resources/images/alive.png", "Uninjured Person", lambda: button_clicked("Uninjured Person"))
         create_button(self.root, pos[4], "resources/images/injured.png", "Injured Person", lambda: button_clicked("Injured Person"))
-        create_button(self.root, pos[5], "resources/images/dead.jpg", "Dead Person", lambda: button_clicked("Dead Person"))
+        create_button(self.root, pos[5], "resources/images/dead.jpg", "Unconscious Person", lambda: button_clicked("Incapacitated "))
         # Robotic State
-        create_button(self.root, pos[6], "resources/images/lost.png", "Connection Lost", lambda: button_clicked("Lost Robot Connection"))
+        create_button(self.root, pos[6], "resources/images/lost.png", "Connection Lost", lambda: button_clicked("Connection Lost"))
         create_button(self.root, pos[7], "resources/images/robotIssue.jpg", "Robot Error", lambda: button_clicked("Robot Error"))
 
         title = tk.Label(self.root, text="When you feel an alert, press the corresponding button", font=("Arial", 20, "bold"))
         title.grid(row=0, column=0, columnspan=4, pady=10)
 
         self.root.mainloop()
+    
+    def destroy(self):
+        self.root.quit()
 
 participant = input("Enter Participant ID: ")
 testn = input("Enter test number: ")
 
-file = open(f"{participant}_{testn}.txt", "x")
+if 'A' in participant:
+    file = open(fr"results/vest/patterns/{participant}_{testn}.txt", "a+")
+else:
+    file = open(fr"results/vest/locational/{participant}_{testn}.txt", "a+")
+
+def button_clicked(button_text):
+    text = f"[{time()}]: USER: {button_text} \n"
+    file.write(text)
+    print(text)
+
+def pattern_played(category):
+    text = f"[{time()}]: VEST: {category} \n"
+    file.write(text)
+    print(text)
+
 
 w = Window()
 
@@ -140,12 +147,17 @@ sleep(5)
 
 print("Test Begin")
 start = time()
-TESTDURATION = 60
 
+TESTDURATION = 60
+sleep(3) # 3 second setup time
 while time() - start < 60:
     pat[randint(0, len(pat)-1)]()
 
-    sleep(random() * 8)
+    sleep((random() * 6)+2)
 
 print("---- Test Complete ----")
+file.close()
+
+#TODO CLOSE WINDOW
+w.destroy()
 exit(0)
