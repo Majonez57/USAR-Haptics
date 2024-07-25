@@ -6,11 +6,12 @@ import matplotlib.pyplot as plt
 import haptics.USARpatterns as USAR
 
 ALERTGAP = 12
+EXPERIMENT_DUR = 600000000
 
 SHOW_DIRECTION = True
 SHOW_MOTION = True
-SHOW_DETECTIONS = False
-RECORD_PATH = True
+SHOW_DETECTIONS = True
+RECORD_PATH = False
 
 # Simulated detections via april tags
 
@@ -129,10 +130,10 @@ class spotVestDisplay:
         
         alerts = self.robot.get_alerts(ALERTGAP)
         APRIL_TO_DETECTION = {
-            3: lambda: USAR.display_dead(self.vest, 'A'),
+            3: lambda: USAR.display_fire(self.vest, 'A'),
             4: lambda:USAR.display_injured(self.vest, 'A'),
             10: lambda: USAR.display_lowO(self.vest, 'A'),
-            9: lambda: USAR.display_error(self.vest, 'A')
+            9: lambda: USAR.display_injured(self.vest, 'A')
         }
 
         if alerts == []:
@@ -150,8 +151,6 @@ class spotVestDisplay:
         x, y, = self.robot.get_pos()
         
         self.path.append((round(x, 4), round(y, 4)))
-
-EXPERIMENT_DUR = 45
 
 def main():
     participant = input("Enter Participant ID: ")

@@ -29,7 +29,7 @@ def connect_to_vest():
 def main():
     
     participant = input("Enter Participant ID: ")
-    vest = connect_to_vest()
+    #vest = connect_to_vest()
 
     root = tk.Tk()
     root.title("USAR-Haptics-Training")

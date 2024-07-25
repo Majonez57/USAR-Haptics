@@ -1,0 +1,11 @@
+[1710939927.2971895]: VEST: Incapacitated 
+[1710939932.333171]: USER: Incapacitated  
+[1710939938.660139]: VEST: Uninjured Person 
+[1710939947.1229634]: VEST: Incapacitated 
+[1710939953.7906768]: USER: Fire 
+[1710939957.7200274]: VEST: Injured Person 
+[1710939962.2646337]: USER: Injured Person 
+[1710939967.21849]: VEST: Connection Lost 
+[1710939973.7867649]: USER: Connection Lost 
+[1710939978.1577628]: VEST: Injured Person 
+[1710939984.489489]: USER: Incapacitated  

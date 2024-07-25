@@ -1,0 +1,16 @@
+[1711032881.9658341]: VEST: Robot Error 
+[1711032885.1507986]: USER: Connection Lost 
+[1711032886.92743]: VEST: Connection Lost 
+[1711032890.483569]: USER: Robot Error 
+[1711032893.2446349]: VEST: Uninjured Person 
+[1711032896.79928]: USER: Uninjured Person 
+[1711032898.7542446]: VEST: Incapacitated 
+[1711032903.425892]: USER: Incapacitated  
+[1711032908.0793638]: VEST: Uninjured Person 
+[1711032912.375544]: USER: Uninjured Person 
+[1711032917.1046207]: VEST: Incapacitated 
+[1711032921.200578]: USER: Incapacitated  
+[1711032928.2114928]: VEST: Robot Error 
+[1711032932.243327]: USER: Connection Lost 
+[1711032935.314784]: VEST: Connection Lost 
+[1711032938.6689682]: USER: Robot Error 

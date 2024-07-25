@@ -53,18 +53,18 @@ class Window(threading.Thread):
 
         # Shuffle Button Positions
         pos = [(1,0),(1,1),(1,2),(1,3),(2,0),(2,1),(2,2),(2,3)]
-        shuffle(pos)
+        #(pos)
 
         # Enviroment State
-        create_button(self.root, pos[0], "resources/images/fire.jpg", "Fire", lambda: button_clicked("Fire"))
-        create_button(self.root, pos[1], "resources/images/biohaz.jpg", "Biohazard", lambda: button_clicked("Biohazard"))
-        create_button(self.root, pos[2], "resources/images/oxygen.jpg", "Low Oxygen", lambda: button_clicked("Low Oxygen"))
+        create_button(self.root, pos[4], "resources/images/fire.jpg", "Fire", lambda: button_clicked("Fire"))
+        create_button(self.root, pos[5], "resources/images/biohaz.jpg", "Biohazard", lambda: button_clicked("Biohazard"))
+        create_button(self.root, pos[6], "resources/images/oxygen.jpg", "Low Oxygen", lambda: button_clicked("Low Oxygen"))
         # User Detections
-        create_button(self.root, pos[3], "resources/images/alive.png", "Uninjured Person", lambda: button_clicked("Uninjured Person"))
-        create_button(self.root, pos[4], "resources/images/injured.png", "Injured Person", lambda: button_clicked("Injured Person"))
-        create_button(self.root, pos[5], "resources/images/dead.jpg", "Unconscious Person", lambda: button_clicked("Incapacitated "))
+        create_button(self.root, pos[0], "resources/images/alive.png", "Uninjured Person", lambda: button_clicked("Uninjured Person"))
+        create_button(self.root, pos[1], "resources/images/injured.png", "Injured Person", lambda: button_clicked("Injured Person"))
+        create_button(self.root, pos[2], "resources/images/dead.jpg", "Unconscious Person", lambda: button_clicked("Incapacitated "))
         # Robotic State
-        create_button(self.root, pos[6], "resources/images/lost.png", "Connection Lost", lambda: button_clicked("Connection Lost"))
+        create_button(self.root, pos[3], "resources/images/lost.png", "Connection Lost", lambda: button_clicked("Connection Lost"))
         create_button(self.root, pos[7], "resources/images/robotIssue.jpg", "Robot Error", lambda: button_clicked("Robot Error"))
 
         title = tk.Label(self.root, text="When you feel an alert, press the corresponding button", font=("Arial", 20, "bold"))
@@ -153,7 +153,7 @@ sleep(3) # 3 second setup time
 while time() - start < 60:
     pat[randint(0, len(pat)-1)]()
 
-    sleep((random() * 6)+2)
+    sleep((random() * 6)+1.5)
 
 print("---- Test Complete ----")
 file.close()

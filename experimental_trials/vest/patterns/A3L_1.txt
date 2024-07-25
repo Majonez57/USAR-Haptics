@@ -1,0 +1,19 @@
+[1710952241.1403406]: VEST: Injured Person 
+[1710952244.3987145]: USER: Injured Person 
+[1710952244.4474137]: USER: Injured Person 
+[1710952247.980832]: VEST: Uninjured Person 
+[1710952252.1492841]: USER: Uninjured Person 
+[1710952252.7227361]: VEST: Biohazard 
+[1710952257.0621626]: USER: Biohazard 
+[1710952262.140641]: VEST: Injured Person 
+[1710952267.168489]: USER: Injured Person 
+[1710952271.286897]: VEST: Incapacitated 
+[1710952276.1482]: USER: Incapacitated  
+[1710952277.7314146]: VEST: Uninjured Person 
+[1710952282.541419]: USER: Uninjured Person 
+[1710952287.2332523]: VEST: Incapacitated 
+[1710952291.529634]: USER: Incapacitated  
+[1710952291.5927978]: USER: Incapacitated  
+[1710952296.1422153]: VEST: Robot Error 
+[1710952300.67434]: USER: Incapacitated  
+[1710952300.7243237]: USER: Incapacitated  
