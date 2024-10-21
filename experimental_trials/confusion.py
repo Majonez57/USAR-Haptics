@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
-from experimental_trials.scoring import extract_info
+from scoring import extract_info
 
 # Example ground truth and predictions (replace with your actual data)
 # These are just example arrays, replace them with your actual data.
@@ -35,7 +35,7 @@ def getLabels(group='A', load=False):
                continue
             else:
                 try:
-                    with open(f"results/vest/{folder}/{group}{i}{e}_{j}.txt") as file:
+                    with open(f"experimental_trials/vest/{folder}/{group}{i}{e}_{j}.txt") as file:
                         lines = file.read().splitlines() 
                         print(i,j)
                     for l, lin in enumerate(lines):
@@ -75,11 +75,26 @@ print(predicted_labels)
 true, reported = getLabels(group='A')
 cm = confusion_matrix(true, reported)
 
+plt.rc('xtick', labelsize=16) 
+plt.rc('ytick', labelsize=16) 
+
 # Plot confusion matrix
-#plt.figure(figsize=(8, 6))
-sns.heatmap(cm, annot=True, fmt='d', cmap='PuRd', xticklabels=labels, yticklabels=labels,cbar=False)
+fig = plt.figure(figsize=(14, 6))
+
+fig.add_subplot(1,2,1)
+sns.heatmap(cm, annot=True, fmt='d', cmap='PuRd', xticklabels=labels, yticklabels=labels,cbar=False,annot_kws={"size": 14, "weight": "bold"})
 plt.xticks(rotation=25, ha='right')
 plt.yticks(rotation=0, ha='right')
-#plt.yticks([])
-plt.subplots_adjust(bottom=0.26, right=1, left=0.245, top=0.945)
+plt.subplots_adjust(bottom=0.26, right=1, left=0.245, top=0.945,wspace=0.12, hspace=0)
+
+true, reported = getLabels(group='B')
+cm = confusion_matrix(true, reported)
+
+fig.add_subplot(1,2,2)
+sns.heatmap(cm, annot=True, fmt='d', cmap='GnBu', xticklabels=labels, yticklabels=labels,cbar=False,annot_kws={"size": 14, "weight": "bold"})
+plt.xticks(rotation=25, ha='right')
+plt.yticks([])
+#plt.subplots_adjust(bottom=0.26, right=1, left=0.245, top=0.945)
+
+
 plt.savefig('conf1.png', bbox_inches='tight')

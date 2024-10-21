@@ -40,7 +40,7 @@ def getdecs(s='', group='A'):
         for j in range(0, 3):
 
             try:
-                countdet(f"results/vest/{folder}/{group}{i}{s}_{j}.txt", tot_per_detection, corr_per_detection)
+                countdet(f"experimental_trials/vest/{folder}/{group}{i}{s}_{j}.txt", tot_per_detection, corr_per_detection)
             except:
                 print(f"Test {i}_{j} not found")
     
@@ -152,7 +152,7 @@ def average(group='A', load=False):
                 pass
             else:
                 try:
-                    s, a = score_run(f"results/vest/{folder}/{group}{i}{e}_{j}.txt", True)
+                    s, a = score_run(f"experimental_trials/vest/{folder}/{group}{i}{e}_{j}.txt", time=True)
                     parts += s
                     partn += 1
                     
@@ -182,8 +182,8 @@ def getScoreData(group='A', load=False):
             if load and j == 2:
                continue
             try:
-                s, a = score_run(f"results/vest/{folder}/{group}{i}{e}_{j}.txt", time=True)
-                xs.append(s*1000)
+                s, a = score_run(f"experimental_trials/vest/{folder}/{group}{i}{e}_{j}.txt", time=False)
+                xs.append(s*100)
             except:
                 print(f"Test {i}_{j} not found")
     
@@ -237,7 +237,15 @@ if __name__ == "__main__":
 
     # Define colors for each box
     colors = ['skyblue', 'purple', 'lightgreen', 'gold']
-    labels = [ "Semantic \n (+Cognitive Load)", "Semantic", "Positional \n (+Cognitive Load)", "Positional"]
+    labels = [ "Semantic \n (+MWL)", "Semantic", "Positional \n (+MWL)", "Positional"]
+    
+    font = {
+        #'weight' : 'bold',
+        'size'   : 18}
+
+    plt.rc('font', **font)
+    plt.rc('xtick', labelsize=18) 
+    plt.rc('ytick', labelsize=18) 
 
     f = plt.figure()
     f.set_figwidth(6)
@@ -251,11 +259,11 @@ if __name__ == "__main__":
         patch.set_facecolor(color)
 
     plt.grid(True, axis='x')
-    plt.xlabel("Delay (ms)")
-    #plt.xlabel("Accuracy (%)")
-    #plt.xticks(range(0,110, 10))
+    #plt.xlabel("Delay (ms)")
+    plt.xlabel("Accuracy (%)")
+    plt.xticks(range(0,110, 20))
     plt.savefig('test.png', bbox_inches='tight')
-    #print(score_run(f"results/vest/patterns/A6L_2.txt"))
+    #print(score_run(f"experimental_trials/vest/patterns/A6L_2.txt"))
 
     #average('A', False)
     #average('B', False)
