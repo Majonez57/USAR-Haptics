@@ -97,6 +97,7 @@ class HapticVest:
         bi += VESTROW * 4
 
         # TODO use self.dots instead!
+        sleep(GAP/2)
         self.player.submit_dot("backFrame" if af == "Back" else "frontFrame", 
                                "VestBack"  if af == "Back" else "VestFront", 
                                [{"index": ai, "intensity": intensity}], int(WALKSPEED* 1000))
@@ -104,7 +105,7 @@ class HapticVest:
         self.player.submit_dot("backFrame" if bf == "Back" else "frontFrame", 
                                "VestBack"  if bf == "Back" else "VestFront", 
                                [{"index": bi, "intensity": intensity}], int(WALKSPEED* 1000))
-        sleep(GAP/2)
+        #sleep(GAP/2)
 
     def display_angle(self, angle, intensity, dur):
         VESTROW = 3
@@ -162,7 +163,7 @@ class HapticVest:
                                "VestBack"  if bf == "Back" else "VestFront", 
                                [{"index": bi, "intensity": intensity}], int(dur* 1000))
         
-        sleep(dur)
+        #sleep(dur)
 
 if __name__ == "__main__":
     vest = HapticVest(r"haptics/all_patterns")

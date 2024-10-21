@@ -18,8 +18,10 @@ class RobotSim:
         self.line_size = 30
         self.x = 200
         self.y = 200
-        self.angle = 0
+        self.angle = 90
+        self.angle_corrected = 0
         self.speed = 5
+        self.forward = False
 
         self.square = self.canvas.create_oval(
             self.x - self.square_size/2,
@@ -35,23 +37,29 @@ class RobotSim:
             self.y - self.line_size * math.sin(math.radians(self.angle)),
             fill="white", width=3, arrow=tk.LAST)
         
-        self.angle_label = tk.Label(self.master, text=f"Angle: {self.angle}°", 
+        self.angle_label = tk.Label(self.master, text=f"Angle: {0}°, Moving: {self.forward}", 
                                     font=("Arial", 16), bg="#1E1E1E", fg="white")
         self.angle_label.pack(pady=10)
         
         self.master.bind("<KeyPress>", self.move_square)
+        self.master.bind("<KeyRelease>", self.move_stop)
+
+    def move_stop(self, event):
+        if event.keysym == "Up":
+            self.forward = False
+        self.update_square()
 
     def move_square(self, event):
-        if event.keysym == "Up":
+        if event.keysym == "Up" and event.state != "KeyRelease":
             self.x += self.speed * math.cos(math.radians(self.angle))
             self.y -= self.speed * math.sin(math.radians(self.angle))
-        elif event.keysym == "Down":
-            self.x -= self.speed * math.cos(math.radians(self.angle))
-            self.y += self.speed * math.sin(math.radians(self.angle))
-        elif event.keysym == "Left":
-            self.angle = (self.angle + 15) % 360
-        elif event.keysym == "Right":
-            self.angle = (self.angle - 15) % 360
+            self.forward = True
+        else:
+            self.forward = False
+            if event.keysym == "Left":
+                self.angle = (self.angle + 15) % 360
+            elif event.keysym == "Right":
+                self.angle = (self.angle - 15) % 360
         
         # Ensure the square stays within the canvas boundaries
         self.x = max(self.square_size/2, min(self.x, 400 - self.square_size/2))
@@ -67,7 +75,10 @@ class RobotSim:
             self.x, self.y,
             self.x + self.line_size * math.cos(math.radians(self.angle)),
             self.y - self.line_size * math.sin(math.radians(self.angle)))
-        self.angle_label.config(text=f"Angle: {self.angle}°")
+        
+        self.angle_corrected = self.angle - 90
+        self.angle_corrected = self.angle_corrected if self.angle_corrected >= 0 else self.angle_corrected+360
+        self.angle_label.config(text=f"Angle: {self.angle_corrected}°, Moving: {self.forward}")
 
 def connect_to_vest():
     try:
@@ -100,10 +111,12 @@ class mainUI:
         self.master.title("VibroHaptic Demo")
         self.master.configure(bg="#1E1E1E")
 
-        self.sim = None
+        self.sim_window = None
 
         semantic = True
         self.vest = connect_to_vest()
+
+        self.robotSim = None
 
         top_bar = tk.Frame(master, bg="#2C2C2C")
         top_bar.pack(fill=tk.X, padx=20, pady=10)
@@ -141,19 +154,23 @@ class mainUI:
         self.checkDir()
 
     def open_sim(self):
-        if self.sim is None or not self.sim.winfo_exists():
-            self.sim = tk.Toplevel(self.master)
-            RobotSim(self.sim)
-            self.sim.protocol("WM_DELETE_WINDOW", self.on_sim_close)
+        if self.sim_window is None or not self.sim_window.winfo_exists():
+            self.sim_window = tk.Toplevel(self.master)
+            self.robotSim = RobotSim(self.sim_window)
+            self.sim_window.protocol("WM_DELETE_WINDOW", self.on_sim_close)
 
     def on_sim_close(self):
-        self.sim.destroy()
-        self.sim = None
+        self.sim_window.destroy()
+        self.sim_window = None
     
     def checkDir(self):
-        if self.sim is not None and self.sim.winfo_exists():
-            print("test")
-        self.master.after(1000, self.checkDir)
+        if self.sim_window is not None and self.sim_window.winfo_exists() and self.robotSim is not None:
+            # Directional Messages go here
+            if not self.robotSim.forward:
+                self.vest.display_angle(self.robotSim.angle_corrected,intensity=100, dur=0.3)
+            else:
+                self.vest.display_walking(self.robotSim.angle_corrected, intensity=100, gap=0.25)
+        self.master.after(400, self.checkDir)
 
     
     
