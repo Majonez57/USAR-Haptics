@@ -5,6 +5,10 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import math
 
+"""
+TODO: Fix Robot Simulator
+"""
+
 class RobotSim:
     def __init__(self, master):
         self.master = master
@@ -57,9 +61,9 @@ class RobotSim:
         else:
             self.forward = False
             if event.keysym == "Left":
-                self.angle = (self.angle + 15) % 360
-            elif event.keysym == "Right":
                 self.angle = (self.angle - 15) % 360
+            elif event.keysym == "Right":
+                self.angle = (self.angle + 15) % 360
         
         # Ensure the square stays within the canvas boundaries
         self.x = max(self.square_size/2, min(self.x, 400 - self.square_size/2))
@@ -73,7 +77,7 @@ class RobotSim:
             self.x + self.square_size/2, self.y + self.square_size/2)
         self.canvas.coords(self.arrow,
             self.x, self.y,
-            self.x + self.line_size * math.cos(math.radians(self.angle)),
+            self.x - self.line_size * math.cos(math.radians(self.angle)),
             self.y - self.line_size * math.sin(math.radians(self.angle)))
         
         self.angle_corrected = self.angle - 90
